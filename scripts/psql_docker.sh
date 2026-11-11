@@ -7,6 +7,7 @@ db_password=$3
 
 # Start docker
 # Make sure you understand the double pipe operator
+# ^^This operator means that if the left side is not true, the right side will run
 sudo systemctl is-active --quiet docker || systemctl start docker
 
 # Check container status (try the following cmds on terminal)
@@ -19,9 +20,9 @@ case $cmd in
   
   # Check if the container is already created
   if [ $container_status -eq 0 ]; then
-		echo 'Container already exists'
-		exit 1	
-	fi
+    echo 'Container already exists'
+    exit 1	
+  fi
 
   # Check # of CLI arguments
   if [ $# -ne 3 ]; then
@@ -30,7 +31,7 @@ case $cmd in
   fi
   
   # Create container
-	docker volume create "pgdata" 
+	docker volume create pgdata
   # Start the container
     docker run --name jrvs-psql -e POSTGRES_PASSWORD=$db_password  -d -v pgdata:/var/lib/postgresql/data -p 5432:5432 postgres:9.6-alpine
   # Make sure you understand what's `$?`
