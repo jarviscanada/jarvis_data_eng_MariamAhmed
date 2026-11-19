@@ -8,37 +8,37 @@ The project was developed on Rocky Linux 9 and uses Bash for the agents, Postgre
 # Quick Start
 
 ```bash
-`# 1. Start a PostgreSQL instance
+# 1. Start a PostgreSQL instance
 
-`./scripts/psql_docker.sh create db_username db_password`
+./scripts/psql_docker.sh create db_username db_password
 
-`./scripts/psql_docker.sh create db_username db_password` 
+./scripts/psql_docker.sh create db_username db_password
 
-`# You can start or stop the instance as needed
- `./scripts/psql_docker.sh start `
- `./scripts/psql_docker.sh stop`
+# You can start or stop the instance as needed
+ ./scripts/psql_docker.sh start
+ ./scripts/psql_docker.sh stop
 
-`# 2. Create the database and the tables`
+# 2. Create the database and the tables
 
-`psql -h localhost -U db_username -d postgres -c "CREATE DATABASE host_agent;"`
+psql -h localhost -U db_username -d postgres -c "CREATE DATABASE host_agent;"
 
-`psql -h localhost -U db_username -f sql/ddl.sql`
+psql -h localhost -U db_username -f sql/ddl.sql
 
-`# 3. Insert hardware specs for this host into the table. This will run only once for each host.
+# 3. Insert hardware specs for this host into the table. This will run only once for each host.
 
-`./scripts/host_info.sh localhost 5432 host_agent db_username db_password`
+./scripts/host_info.sh localhost 5432 host_agent db_username db_password
 
-`# 4. Insert one sample of usage data, this is mainly to verify that it works as intended
+# 4. Insert one sample of usage data, this is mainly to verify that it works as intended
 
-`./scripts/host_usage.sh localhost 5432 host_agent db_username db_password`
+./scripts/host_usage.sh localhost 5432 host_agent db_username db_password
 
-`# 5. Schedule usage collection every minute`
+# 5. Schedule usage collection every minute
 
-`crontab -e`
+crontab -e
 
-`# add this line (make sure to update the path!):`
+# add this line (make sure to update the path!):
 
-`* * * * * bash /path/to/linux_sql/scripts/host_usage.sh localhost 5432 host_agent db_username db_password &> /tmp/host_usage.log`
+* * * * * bash /path/to/linux_sql/scripts/host_usage.sh localhost 5432 host_agent db_username db_password &> /tmp/host_usage.log
 ``` 
 
 
@@ -54,20 +54,20 @@ This project was implemented in various small stages, with a separate Git branch
 
 Creates, starts, or stops the PostgreSQL container. It starts the Docker service if needed, stores data in a named volume `pgdata` .
  ```bash
-`./scripts/psql_docker.sh create|start|stop [db_username] [db_password]`
+./scripts/psql_docker.sh create|start|stop [db_username] [db_password]
 
-`./scripts/psql_docker.sh create db_username db_password`
+./scripts/psql_docker.sh create db_username db_password
 
-`./scripts/psql_docker.sh start`
+./scripts/psql_docker.sh start
 
-`./scripts/psql_docker.sh stop`
+./scripts/psql_docker.sh stop
 ``` 
 
 ###  host_info.sh
 Collects hardware details including the hostname, CPU count, architecture, model, clock speed, L2 cache, total memory, and inserts one row into `host_info`. If the host is already registered, the insert is skipped.
 
  ```bash
-`./scripts/host_info.sh psql_host psql_port db_name psql_user psql_password`
+./scripts/host_info.sh psql_host psql_port db_name psql_user psql_password
 ``` 
 
 ###  host_usage.sh
@@ -75,7 +75,7 @@ Collects hardware details including the hostname, CPU count, architecture, model
 Collects a current usage sample with `vmstat` and `df` and inserts one row into `host_usage`, linked to the host by looking up its hostname in `host_info`. The host must be registered with `host_info.sh` first.
 
  ```bash
-`./scripts/host_usage.sh psql_host psql_port db_name psql_user psql_password`
+./scripts/host_usage.sh psql_host psql_port db_name psql_user psql_password
 ```
 
 ###  crontab
@@ -83,13 +83,13 @@ Collects a current usage sample with `vmstat` and `df` and inserts one row into 
 Runs `host_usage.sh` every minute on each monitored host so the database can build a time series of usage. Output is redirected to a log file.
 
  ```bash
-`crontab -e`
+crontab -e
 
-`* * * * * bash /path/to/linux_sql/scripts/host_usage.sh localhost 5432 host_agent db_username db_password &> /tmp/host_usage.log`
+* * * * * bash /path/to/linux_sql/scripts/host_usage.sh localhost 5432 host_agent db_username db_password &> /tmp/host_usage.log
 
-`crontab -l # confirm the job is installed`
+crontab -l # confirm the job is installed
 
-`tail -f /tmp/host_usage.log`
+tail -f /tmp/host_usage.log
 ```
 
 ## Database Modeling
@@ -127,7 +127,7 @@ Describe the schema of each table using markdown table syntax (do not put any sq
 | disk_available | int | Free space on the root filesystem in MB |
 
 # Test
-The scripts for this project were tested manually on a Linux host against a local PostgreSQL container:`
+The scripts for this project were tested manually on a Linux host against a local PostgreSQL container:
 
 1. **Docker script:** ran `create`, `start`, `stop`, a second `create` (should fail with "Container already exists"), and an invalid command. 
 
@@ -137,7 +137,7 @@ The scripts for this project were tested manually on a Linux host against a loca
 
 4. **host_usage.sh:** ran it several times and checked `host_usage` for new rows with correct values; also ran it with a bad password and with the wrong number of arguments to confirm it exits with an error. 
 
-``5. **Cron:** installed the job, waited a few minutes, and confirmed about one new row per minute. 
+5. **Cron:** installed the job, waited a few minutes, and confirmed about one new row per minute. 
 
 # Deployment
 - The source code is kept in a GitHub repository and cloned onto each monitored host. 
