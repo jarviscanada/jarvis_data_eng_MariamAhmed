@@ -46,7 +46,7 @@ The project was developed on Rocky Linux 9 and uses Bash for the agents, Postgre
 This project was implemented in various small stages, with a separate Git branch for each feature. I started by setting up the PostgreSQL instance with Docker, then created the database and tables. Next, I wrote the scripts that collect the hardware specs and usage data, and lastly I automated the collection with a cron job. Each feature branch was merged into `develop` once it was finished.
 
 ## Architecture
-Draw a cluster diagram with three Linux hosts, a DB, and agents (use draw.io website). Image must be saved to the `assets` directory.
+![Architecture](assets/linux_sql_diagram.png)
 
 ##  Scripts
 
