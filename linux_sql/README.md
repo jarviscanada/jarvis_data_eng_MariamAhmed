@@ -93,12 +93,6 @@ tail -f /tmp/host_usage.log
 ```
 
 ## Database Modeling
-Describe the schema of each table using markdown table syntax (do not put any sql code)
-###  host_info
-
-
-
-## Database Modeling
 
 ### `host_info`
 
