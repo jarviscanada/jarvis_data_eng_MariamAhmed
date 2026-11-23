@@ -42,7 +42,7 @@ crontab -e
 ``` 
 
 
-# Implemenation
+# Implementation
 This project was implemented in various small stages, with a separate Git branch for each feature. I started by setting up the PostgreSQL instance with Docker, then created the database and tables. Next, I wrote the scripts that collect the hardware specs and usage data, and lastly I automated the collection with a cron job. Each feature branch was merged into `develop` once it was finished.
 
 ## Architecture
@@ -64,7 +64,7 @@ Creates, starts, or stops the PostgreSQL container. It starts the Docker service
 ``` 
 
 ###  host_info.sh
-Collects hardware details including the hostname, CPU count, architecture, model, clock speed, L2 cache, total memory, and inserts one row into `host_info`. If the host is already registered, the insert is skipped.
+Collects hardware details including the hostname, CPU count, architecture, model, clock speed, L2 cache, total memory, and inserts one row into `host_info`. If the host is already registered, the insert is rejected.
 
  ```bash
 ./scripts/host_info.sh psql_host psql_port db_name psql_user psql_password
@@ -106,7 +106,7 @@ tail -f /tmp/host_usage.log
 | cpu_mhz | double precision (float8) | CPU clock speed in MHz |
 | l2_cache | int | L2 cache size in KB |
 | timestamp | timestamp | UTC time the specifications were collected |
-| total_mem | int | Total memory in MB |
+| total_mem | int | Total memory in KB |
 
 ### `host_usage`
 
@@ -127,7 +127,7 @@ The scripts for this project were tested manually on a Linux host against a loca
 
 2. **DDL:** ran `ddl.sql` twice to confirm `IF NOT EXISTS` makes it repeatable, then listed the tables with `\dt` command in psql. 
 
-3. **host_info.sh:** ran it, then `SELECT * FROM host_info;` to confirm one correct row, and ran it again to confirm there was no duplicate.
+3. **host_info.sh:** ran it, then `SELECT * FROM host_info;` to confirm one correct row, and ran it again to confirm the host cannot be registered twice.
 
 4. **host_usage.sh:** ran it several times and checked `host_usage` for new rows with correct values; also ran it with a bad password and with the wrong number of arguments to confirm it exits with an error. 
 
