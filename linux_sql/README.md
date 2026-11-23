@@ -140,4 +140,5 @@ The scripts for this project were tested manually on a Linux host against a loca
 
 # Improvements
 - A cleanup job could be added to delete old `host_usage` rows so the table does not grow forever.
-- `host_info.sh` currently skips hosts that already exist. It could instead update the row when specifications on the host change (ex. added RAM).#
+- `host_info.sh` currently skips hosts that already exist. It could instead update the row when specifications on the host change (ex. added RAM).
+- Automated tests could be added for the scripts, so the only testing done is not through manual steps.
