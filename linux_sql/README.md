@@ -1,7 +1,7 @@
 # Introduction
 This project is a monitoring system for a cluster of Linux servers. Every host runs two Bash agents. The first collects the server’s hardware specifications once, and the second collects its resource usage every minute, including free memory, CPU idle and kernel time, and available disk space.
 
-These two agents write everything into a PostgreSQL database that runs in a Docker container. The data is useful to infrastructure and operations teams because they can easily see how each machine is configured and how busy it is, which supports capacity planning and early detection of overloaded or underused hosts.
+These two agents write everything into a PostgreSQL database that runs in a Docker container. The data is useful to developers and infrastructure and operations teams because they can easily see how each machine is configured and how busy it is, which supports capacity planning and early detection of overloaded or underused hosts.
 
 The project was developed on Rocky Linux 9 and uses Bash for the agents, PostgreSQL for storage, Docker to run the database, cron for scheduling, SQL for analysis, and GitHub for version control.
 
